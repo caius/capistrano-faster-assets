@@ -36,7 +36,7 @@ namespace :deploy do
 		next if [release, latest].map{|d| test "[ -e #{d} ]"}.uniq == [false]
 		
                 # execute raises if there is a diff
-                execute(:diff, '-Nqr', release, latest) rescue raise(PrecompileRequired)
+                execute(fetch(:faster_assets_diff), '-Nqr', release, latest) rescue raise(PrecompileRequired)
               end
 
               info("Skipping asset precompile, no asset diff found")
