@@ -35,6 +35,21 @@ text = <%= helper.get_text %>
 
 The assets might not get recompiled, even if they have to, as this gem only checks if the asset file has changed (which is probably the only safe/fast way to do this).
 
+### `diff` and `cp` behaviour
+
+Both `diff` and `cp` used by this gem expect certain behaviour and break if you use a tool that doesn't provide those behaviours. These have both been observed on
+SmartOS, where `gdiff` and `gcp` provide the behaviour required, but the built in `diff` and `cp` don't.
+
+If you're running into errors with diff, make sure you're using a diff binary that supports the `-Nqr` arguments. If not, you can point this gem at the correct diff binary  
+to use on your nodes by setting the `:faster_assets_diff` variable in your deploy config:
+
+    set :faster_assets_diff, :gdiff
+
+`cp` on the other hand, expects `cp -r` to preserve symlinks. If your cp binary doesn't, then you can point at a binary that does by setting `:faster_assets_cp` in your
+deploy config:
+
+    set :faster_assets_cp, :gcp
+
 ### More Capistrano automation?
 
 If you'd like to streamline your Capistrano deploys, you might want to check
